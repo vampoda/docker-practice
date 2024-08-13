@@ -1,0 +1,28 @@
+
+# Use the latest Node.js image
+FROM node:18-alpine
+
+
+# Install additional packages
+RUN apk update && apk add --no-cache \
+    curl \
+    vim \
+    git
+
+# Set the working directory in the container
+WORKDIR /usr/src/app
+
+# Copy package.json and package-lock.json (or yarn.lock) to the container
+COPY package*.json ./
+
+# Install application dependencies
+RUN npm install
+
+# Copy the rest of the application code to the container
+COPY . .
+
+# Expose the port the application will run on
+EXPOSE 3000
+
+# Define the command to run the application
+CMD ["npm", "start"]
